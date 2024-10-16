@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice for Kids</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f8ff;
+        }
+        .container {
+            max-width: 400px;
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            background-color: white;
+        }
+        .message {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: red;
+        }
+        .correct {
+            margin-top: 10px;
+            font-size: 1.5em;
+            color: green;
+        }
+        .equation {
+            font-size: 1.5em;
+        }
+        #answerInput {
+            width: 50px;
+            display: inline-block;
+            text-align: center;
+            -moz-appearance: textfield; /* Firefox */
+        }
+        /* Remove arrows for Chrome, Edge, and Safari */
+        #answerInput::-webkit-outer-spin-button,
+        #answerInput::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /* For Internet Explorer */
+        #answerInput {
+            -ms-appearance: none;
+        }
+        .score {
+            font-size: 1.2em;
+            color: #007bff;
+        }
+        .timer {
+            font-size: 1.2em;
+            color: #ff4500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Math Practice</h1>
+    <p class="score">Score: <span id="score">0</span></p>
+    <button class="btn btn-secondary mb-2" id="toggleTimerBtn" onclick="toggleTimer()">Turn Timer On</button>
+    <p class="timer">Time left: <span id="timer"></span>s</p>
+    <div class="equation">
+        <span id="leftPart" class="fs-4"></span>
+        <span id="operator" class="fs-4"></span>
+        <span id="rightPart" class="fs-4"></span>
+        <span id="equals" class="fs-4"> = </span>
+        <input type="number" id="answerInput" class="form-control d-inline" placeholder="x">
+        <span id="result" class="fs-4"></span>
+    </div>
+    <button class="btn btn-primary mt-3" id="submitBtn" onclick="checkAnswer()">Submit</button>
+    <p class="message" id="message"></p>
+    <p class="correct" id="correctMessage"></p>
+</div>
+
+<script>
+    let correctAnswer;
+    let score = 0;
+    let timeLeft = 10;
+    let timerInterval;
+    let isTimerOn = false;  // Timer is off by default
+
+    function generateQuestion() {
+        let num1 = Math.floor(Math.random() * 10) + 1; // Random number from 1 to 10
+        let num2 = Math.floor(Math.random() * 10) + 1; // Random number from 1 to 10
+        const isAddition = Math.random() > 0.5;
+        const inputPosition = Math.floor(Math.random() * 3); // 0: first operand, 1: second operand, 2: result
+
+        let leftPartText = '', rightPartText = '', operatorText, result;
+
+        // Ensure result is always >= 1
+        if (isAddition) {
+            operatorText = ' + ';
+            result = num1 + num2;
+        } else {
+            operatorText = ' - ';
+            // Make sure the result of subtraction is always positive
+            if (num1 < num2) {
+                [num1, num2] = [num2, num1]; // Swap num1 and num2 if num1 < num2 to avoid negative results
+            }
+            result = num1 - num2;
+        }
+
+        document.getElementById('answerInput').style.display = 'inline-block';
+
+        // Determine where to place the input field
+        if (inputPosition === 0) {
+            // Input replaces the first operand
+            correctAnswer = num1;
+            rightPartText = num2;
+            document.getElementById('leftPart').innerText = '';
+            document.getElementById('rightPart').innerText = rightPartText;
+            document.getElementById('result').innerText = result;
+        } else if (inputPosition === 1) {
+            // Input replaces the second operand
+            leftPartText = num1;
+            correctAnswer = num2;
+            document.getElementById('leftPart').innerText = leftPartText;
+            document.getElementById('rightPart').innerText = '';
+            document.getElementById('result').innerText = result;
+        } else {
+            // Input replaces the result
+            leftPartText = num1;
+            rightPartText = num2;
+            correctAnswer = result;
+            document.getElementById('leftPart').innerText = leftPartText;
+            document.getElementById('rightPart').innerText = rightPartText;
+            document.getElementById('result').innerText = '';
+        }
+
+        document.getElementById('operator').innerText = operatorText;
+
+        document.getElementById('answerInput').value = '';
+        document.getElementById('message').innerText = '';
+        document.getElementById('correctMessage').innerText = ''; // Clear the "Correct!" message
+
+        if (inputPosition === 0) {
+            document.getElementById('operator').before(document.getElementById('answerInput'));
+        } else if (inputPosition === 1) {
+            document.getElementById('rightPart').before(document.getElementById('answerInput'));
+        } else {
+            document.getElementById('result').before(document.getElementById('answerInput'));
+        }
+
+        // Auto-focus the input field after generating a new question
+        document.getElementById('answerInput').focus();
+
+        if (isTimerOn) {
+            resetTimer(); // Reset and start the timer for the new question
+        } else {
+            clearInterval(timerInterval);
+            document.getElementById('timer').innerText = ''; // Hide the timer display
+        }
+    }
+
+    function checkAnswer() {
+        const userAnswer = document.getElementById('answerInput').value.trim();
+        const parsedAnswer = parseInt(userAnswer, 10); // Convert the input to an integer
+
+        if (userAnswer === "" || isNaN(parsedAnswer)) {
+            document.getElementById('message').innerText = 'Please enter a valid number!';
+        } else if (parsedAnswer === correctAnswer) {
+            document.getElementById('correctMessage').innerText = 'Correct! 😊';
+            score++;
+            document.getElementById('score').innerText = score;
+            clearInterval(timerInterval);
+            setTimeout(generateQuestion, 1000); // Wait 1 second before showing a new question
+        } else {
+            document.getElementById('message').innerText = 'Try again!';
+        }
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(function () {
+            timeLeft--;
+            document.getElementById('timer').innerText = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('message').innerText = "Time's up!";
+                setTimeout(generateQuestion, 1000); // Wait 1 second before showing a new question
+            }
+        }, 1000);
+    }
+
+    function resetTimer() {
+        clearInterval(timerInterval);
+        timeLeft = 10;
+        document.getElementById('timer').innerText = timeLeft;
+        startTimer();
+    }
+
+    function toggleTimer() {
+        isTimerOn = !isTimerOn;
+        if (isTimerOn) {
+            document.getElementById('toggleTimerBtn').innerText = "Turn Timer Off";
+            document.getElementById('timer').innerText = timeLeft;
+            resetTimer();
+        } else {
+            document.getElementById('toggleTimerBtn').innerText = "Turn Timer On";
+            clearInterval(timerInterval);
+            document.getElementById('timer').innerText = ''; // Hide the timer display
+        }
+    }
+
+    // Detect "Enter" key press and trigger submit when pressed
+    document.getElementById('answerInput').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            document.getElementById('submitBtn').click(); // Simulate submit button click
+        }
+    });
+
+    window.onload = generateQuestion;
+</script>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
