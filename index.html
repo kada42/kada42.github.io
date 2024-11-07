@@ -66,8 +66,8 @@
 <div class="container">
     <h1>Math Practice</h1>
     <p class="score">Score: <span id="score">0</span></p>
-    <button class="btn btn-secondary mb-2" id="toggleTimerBtn" onclick="toggleTimer()">Turn Timer On</button>
-    <p class="timer">Time left: <span id="timer"></span>s</p>
+    <button class="btn btn-secondary mb-2" id="toggleTimerBtn" onclick="toggleTimer()">Time Timer</button>
+    <p class="timer">Tid kvar: <span id="timer"></span>s</p>
     <div class="equation">
         <span id="leftPart" class="fs-4"></span>
         <span id="operator" class="fs-4"></span>
@@ -76,7 +76,7 @@
         <input type="number" id="answerInput" class="form-control d-inline" placeholder="">
         <span id="result" class="fs-4"></span>
     </div>
-    <button class="btn btn-primary mt-3" id="submitBtn" onclick="checkAnswer()">Submit</button>
+    <button class="btn btn-primary mt-3" id="submitBtn" onclick="checkAnswer()">Rätta</button>
     <p class="message" id="message"></p>
     <p class="correct" id="correctMessage"></p>
 </div>
@@ -166,7 +166,7 @@
         const parsedAnswer = parseInt(userAnswer, 10); // Convert the input to an integer
 
         if (userAnswer === "" || isNaN(parsedAnswer)) {
-            document.getElementById('message').innerText = 'Please enter a valid number!';
+            document.getElementById('message').innerText = 'Vänligen ange en siffra...';
         } else if (parsedAnswer === correctAnswer) {
             document.getElementById('correctMessage').innerText = 'Rätt svar! 😊🤩';
             score++;
@@ -184,7 +184,7 @@
             document.getElementById('timer').innerText = timeLeft;
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
-                document.getElementById('message').innerText = "Time's up!";
+                document.getElementById('message').innerText = "Tiden är ute!";
                 setTimeout(generateQuestion, 1000); // Wait 1 second before showing a new question
             }
         }, 1000);
@@ -200,11 +200,11 @@
     function toggleTimer() {
         isTimerOn = !isTimerOn;
         if (isTimerOn) {
-            document.getElementById('toggleTimerBtn').innerText = "Turn Timer Off";
+            document.getElementById('toggleTimerBtn').innerText = "Stoppa timer";
             document.getElementById('timer').innerText = timeLeft;
             resetTimer();
         } else {
-            document.getElementById('toggleTimerBtn').innerText = "Turn Timer On";
+            document.getElementById('toggleTimerBtn').innerText = "Starta timer";
             clearInterval(timerInterval);
             document.getElementById('timer').innerText = ''; // Hide the timer display
         }
