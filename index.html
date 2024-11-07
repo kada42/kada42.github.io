@@ -168,13 +168,13 @@
         if (userAnswer === "" || isNaN(parsedAnswer)) {
             document.getElementById('message').innerText = 'Please enter a valid number!';
         } else if (parsedAnswer === correctAnswer) {
-            document.getElementById('correctMessage').innerText = 'Correct! 😊';
+            document.getElementById('correctMessage').innerText = 'Rätt svar! 😊🤩';
             score++;
             document.getElementById('score').innerText = score;
             clearInterval(timerInterval);
             setTimeout(generateQuestion, 1000); // Wait 1 second before showing a new question
         } else {
-            document.getElementById('message').innerText = 'Try again!';
+            document.getElementById('message').innerText = 'Prova igen! 🤗';
         }
     }
 
