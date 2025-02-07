@@ -57,7 +57,7 @@
         }
         .timer {
             font-size: 1.2em;
-            color: #ff4500;
+            color: #f58157;
         }
     </style>
 </head>
@@ -65,9 +65,9 @@
 
 <div class="container">
     <h1>Träna Matte</h1>
-    <p class="score">Poäng: <span id="score">0</span></p>
-    <button class="btn btn-secondary mb-2" id="toggleTimerBtn" onclick="toggleTimer()">Time Timer</button>
-    <p class="timer">Tid kvar: <span id="timer"></span>s</p>
+    <p class="score">Poäng: <span id="score"></span></p>
+    <button class="btn btn-secondary mb-2" id="toggleTimerBtn" onclick="toggleTimer()">Starta timer</button>
+    <p class="timer"><span id="timeleft"></span> <span id="timer"></span></p>
     <div class="equation">
         <span id="leftPart" class="fs-4"></span>
         <span id="operator" class="fs-4"></span>
@@ -83,10 +83,16 @@
 
 <script>
     let correctAnswer;
-    let score = 0;
+    let score = sessionStorage.getItem("score");
     let timeLeft = 10;
     let timerInterval;
     let isTimerOn = false;  // Timer is off by default
+
+    function getScore() {
+        score = sessionStorage.getItem("score")
+        console.log(score)
+        document.getElementById("score").innerText = score // likely this that doesn't set
+    }
 
     function generateQuestion() {
         let num1 = Math.floor(Math.random() * 10) + 1; // Random number from 1 to 10
@@ -157,7 +163,8 @@
             resetTimer(); // Reset and start the timer for the new question
         } else {
             clearInterval(timerInterval);
-            document.getElementById('timer').innerText = ''; // Hide the timer display
+            document.getElementById('timeleft').innerText = ''
+            document.getElementById('timer').innerText = '';
         }
     }
 
@@ -170,7 +177,8 @@
         } else if (parsedAnswer === correctAnswer) {
             document.getElementById('correctMessage').innerText = 'Rätt svar! 😊🤩';
             score++;
-            document.getElementById('score').innerText = score;
+            sessionStorage.setItem("score", score);
+            document.getElementById('score').innerText = sessionStorage.getItem("score");
             clearInterval(timerInterval);
             setTimeout(generateQuestion, 1000); // Wait 1 second before showing a new question
         } else {
@@ -193,6 +201,7 @@
     function resetTimer() {
         clearInterval(timerInterval);
         timeLeft = 10;
+        document.getElementById('timeleft').innerText = 'Tid kvar: '
         document.getElementById('timer').innerText = timeLeft;
         startTimer();
     }
@@ -217,7 +226,10 @@
         }
     });
 
-    window.onload = generateQuestion;
+    window.onload = function() {
+        getScore();
+        generateQuestion();
+    };
 </script>
 
 <!-- Bootstrap JS (optional) -->
