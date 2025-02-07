@@ -11,7 +11,12 @@
 
 <div class="container">
     <h1>Träna Matte</h1>
-    <p class="score">Poäng: <span id="score"></span></p>
+    <div>
+        <!-- Button to Open Modal -->
+        <button class="btn btn-primary mb-2" id="openModalBtn">Enter Name</button>
+    </div>
+    <p></p>
+    <p class="score"><span id="displayName"></span> -> poäng: <span id="score"></span></p>
     <button class="btn btn-secondary mb-2" id="toggleTimerBtn" onclick="toggleTimer()">Starta timer</button>
     <p class="timer"><span id="timeleft"></span> <span id="timer"></span></p>
     <div class="equation">
@@ -25,6 +30,17 @@
     <button class="btn btn-primary mt-3" id="submitBtn" onclick="checkAnswer()">Rätta</button>
     <p class="message" id="message"></p>
     <p class="correct" id="correctMessage"></p>
+
+    <!-- Modal Structure -->
+    <div id="nameModal" class="modal">
+        <div class="modal-content">
+            <h2>Enter Your Name</h2>
+            <input type="text" id="nameInput" placeholder="Your Name">
+            <br>
+            <button class="btn btn-primary mb-2" id="submitName">Submit</button>
+            <button class="btn btn-warning mb-2" id="closeModal">Close</button>
+        </div>
+    </div>
 </div>
 
 <script src="index.js"></script>

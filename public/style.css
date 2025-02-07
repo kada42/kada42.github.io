@@ -1,52 +1,85 @@
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f8ff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background-color: #f0f8ff;
 }
 .container {
-    max-width: 400px;
-    text-align: center;
-    padding: 20px;
-    border: 2px solid #007bff;
-    border-radius: 10px;
-    background-color: white;
+	max-width: 400px;
+	text-align: center;
+	padding: 20px;
+	border: 2px solid #007bff;
+	border-radius: 10px;
+	background-color: white;
 }
 .message {
-    margin-top: 10px;
-    font-size: 1.2em;
-    color: red;
+	margin-top: 10px;
+	font-size: 1.2em;
+	color: red;
 }
 .correct {
-    margin-top: 10px;
-    font-size: 1.5em;
-    color: green;
+	margin-top: 10px;
+	font-size: 1.5em;
+	color: green;
 }
 .equation {
-    font-size: 1.5em;
+	font-size: 1.5em;
 }
 #answerInput {
-    width: 50px;
-    display: inline-block;
-    text-align: center;
-    -moz-appearance: textfield; /* Firefox */
+	width: 50px;
+	display: inline-block;
+	text-align: center;
+	-moz-appearance: textfield; /* Firefox */
 }
 /* Remove arrows for Chrome, Edge, and Safari */
 #answerInput::-webkit-outer-spin-button,
 #answerInput::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+	-webkit-appearance: none;
+	margin: 0;
 }
 /* For Internet Explorer */
 #answerInput {
-    -ms-appearance: none;
+	-ms-appearance: none;
 }
 .score {
-    font-size: 1.2em;
-    color: #007bff;
+	font-size: 1.2em;
+	color: #007bff;
 }
 .timer {
-    font-size: 1.2em;
-    color: #f58157;
+	font-size: 1.2em;
+	color: #f58157;
+}
+
+/* Modal Styles */
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+	background-color: white;
+	margin: 15% auto;
+	padding: 20px;
+	border-radius: 10px;
+	width: 300px;
+	text-align: center;
+}
+
+.modal input {
+	width: 90%;
+	padding: 10px;
+	margin: 10px 0;
+}
+
+.modal button {
+	margin: 5px;
+	padding: 10px 15px;
+	cursor: pointer;
 }
