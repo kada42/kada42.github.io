@@ -1,0 +1,52 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f8ff;
+}
+.container {
+    max-width: 400px;
+    text-align: center;
+    padding: 20px;
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    background-color: white;
+}
+.message {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: red;
+}
+.correct {
+    margin-top: 10px;
+    font-size: 1.5em;
+    color: green;
+}
+.equation {
+    font-size: 1.5em;
+}
+#answerInput {
+    width: 50px;
+    display: inline-block;
+    text-align: center;
+    -moz-appearance: textfield; /* Firefox */
+}
+/* Remove arrows for Chrome, Edge, and Safari */
+#answerInput::-webkit-outer-spin-button,
+#answerInput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* For Internet Explorer */
+#answerInput {
+    -ms-appearance: none;
+}
+.score {
+    font-size: 1.2em;
+    color: #007bff;
+}
+.timer {
+    font-size: 1.2em;
+    color: #f58157;
+}

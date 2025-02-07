@@ -1,88 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Träna matematik</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f8ff;
-        }
-        .container {
-            max-width: 400px;
-            text-align: center;
-            padding: 20px;
-            border: 2px solid #007bff;
-            border-radius: 10px;
-            background-color: white;
-        }
-        .message {
-            margin-top: 10px;
-            font-size: 1.2em;
-            color: red;
-        }
-        .correct {
-            margin-top: 10px;
-            font-size: 1.5em;
-            color: green;
-        }
-        .equation {
-            font-size: 1.5em;
-        }
-        #answerInput {
-            width: 50px;
-            display: inline-block;
-            text-align: center;
-            -moz-appearance: textfield; /* Firefox */
-        }
-        /* Remove arrows for Chrome, Edge, and Safari */
-        #answerInput::-webkit-outer-spin-button,
-        #answerInput::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        /* For Internet Explorer */
-        #answerInput {
-            -ms-appearance: none;
-        }
-        .score {
-            font-size: 1.2em;
-            color: #007bff;
-        }
-        .timer {
-            font-size: 1.2em;
-            color: #f58157;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h1>Träna Matte</h1>
-    <p class="score">Poäng: <span id="score"></span></p>
-    <button class="btn btn-secondary mb-2" id="toggleTimerBtn" onclick="toggleTimer()">Starta timer</button>
-    <p class="timer"><span id="timeleft"></span> <span id="timer"></span></p>
-    <div class="equation">
-        <span id="leftPart" class="fs-4"></span>
-        <span id="operator" class="fs-4"></span>
-        <span id="rightPart" class="fs-4"></span>
-        <span id="equals" class="fs-4"> = </span>
-        <input type="number" id="answerInput" class="form-control d-inline" placeholder="">
-        <span id="result" class="fs-4"></span>
-    </div>
-    <button class="btn btn-primary mt-3" id="submitBtn" onclick="checkAnswer()">Rätta</button>
-    <p class="message" id="message"></p>
-    <p class="correct" id="correctMessage"></p>
-</div>
-
-<script>
-    let correctAnswer;
+let correctAnswer;
     let score = sessionStorage.getItem("score");
     let timeLeft = 10;
     let timerInterval;
@@ -90,8 +6,7 @@
 
     function getScore() {
         score = sessionStorage.getItem("score")
-        console.log(score)
-        document.getElementById("score").innerText = score // likely this that doesn't set
+        document.getElementById("score").innerText = score
     }
 
     function generateQuestion() {
@@ -230,10 +145,3 @@
         getScore();
         generateQuestion();
     };
-</script>
-
-<!-- Bootstrap JS (optional) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-</html>
