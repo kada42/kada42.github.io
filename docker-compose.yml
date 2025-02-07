@@ -1,0 +1,9 @@
+version: '3'
+services:
+  web:
+    image: nginx:alpine
+    container_name: learning-math-app
+    ports:
+      - "8090:80"
+    volumes:
+      - ./public:/usr/share/nginx/html
