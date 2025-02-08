@@ -37,24 +37,18 @@ function generateQuestion() {
         // Input replaces the first operand
         correctAnswer = num1;
         rightPartText = num2;
-        document.getElementById('leftPart').innerText = '';
-        document.getElementById('rightPart').innerText = rightPartText;
-        document.getElementById('result').innerText = result;
+        populateCalculation('', rightPartText, result)
     } else if (inputPosition === 1) {
         // Input replaces the second operand
         leftPartText = num1;
         correctAnswer = num2;
-        document.getElementById('leftPart').innerText = leftPartText;
-        document.getElementById('rightPart').innerText = '';
-        document.getElementById('result').innerText = result;
+        populateCalculation(leftPartText, '', result)
     } else {
         // Input replaces the result
         leftPartText = num1;
         rightPartText = num2;
         correctAnswer = result;
-        document.getElementById('leftPart').innerText = leftPartText;
-        document.getElementById('rightPart').innerText = rightPartText;
-        document.getElementById('result').innerText = '';
+        populateCalculation(leftPartText, rightPartText, '')
     }
 
     document.getElementById('operator').innerText = operatorText;
@@ -81,6 +75,12 @@ function generateQuestion() {
         document.getElementById('timeleft').innerText = ''
         document.getElementById('timer').innerText = '';
     }
+}
+
+function populateCalculation(left, right, answer) {
+    document.getElementById('leftPart').innerText = left;
+    document.getElementById('rightPart').innerText = right;
+    document.getElementById('result').innerText = answer;
 }
 
 function checkAnswer() {
@@ -185,14 +185,10 @@ document.getElementById('answerInput').addEventListener('keydown', function(even
     }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    initModal();
-    loadStoredName();
-});
-
 window.onload = function() {
     getScore();
     generateQuestion();
-
+    initModal();
+    loadStoredName();
 };
 
