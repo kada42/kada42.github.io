@@ -1,13 +1,7 @@
 let correctAnswer;
-let score = sessionStorage.getItem("score");
 let timeLeft = 10;
 let timerInterval;
 let isTimerOn = false;  // Timer is off by default
-
-function getScore() {
-    score = sessionStorage.getItem("score")
-    document.getElementById("score").innerText = score
-}
 
 function generateQuestion() {
     let num1 = Math.floor(Math.random() * 10) + 1; // Random number from 1 to 10
@@ -91,14 +85,29 @@ function checkAnswer() {
         document.getElementById('message').innerText = 'Vänligen ange en siffra...';
     } else if (parsedAnswer === correctAnswer) {
         document.getElementById('correctMessage').innerText = 'Rätt svar! 😊🤩';
-        score++;
-        sessionStorage.setItem("score", score);
-        document.getElementById('score').innerText = sessionStorage.getItem("score");
+        updateScore()
         clearInterval(timerInterval);
         setTimeout(generateQuestion, 1000); // Wait 1 second before showing a new question
     } else {
         document.getElementById('message').innerText = 'Prova igen! 🤗';
     }
+}
+
+function checkIfPlayerExists(player) {
+    const checkPlayer = JSON.parse(sessionStorage.getItem(player))
+    // check if player exists
+}
+
+function getScore() {
+    const player = JSON.parse(sessionStorage.getItem('player'))
+    player !== null ? document.getElementById("score").innerText = player.score : '0' 
+}
+
+function updateScore() {
+    let updatePlayer = JSON.parse(sessionStorage.getItem('player'));
+    updatePlayer.score++;
+    sessionStorage.setItem('player', JSON.stringify(updatePlayer));
+    document.getElementById("score").innerText = updatePlayer.score
 }
 
 function startTimer() {
@@ -140,6 +149,11 @@ function initModal() {
     let closeBtn = document.getElementById("closeModal");
     let submitBtn = document.getElementById("submitName");
 
+    if (JSON.parse(sessionStorage.getItem('player') === null)) {
+        modal.style.display = "block";
+        //window.oninput.apply()
+    }
+
     // Open modal
     openBtn.onclick = function () {
         modal.style.display = "block";
@@ -161,21 +175,14 @@ function initModal() {
     submitBtn.onclick = function () {
         let name = document.getElementById("nameInput").value;
         if (name.trim() !== "") {
-            sessionStorage.setItem("username", name);
-            document.getElementById("displayName").innerText = name;
+            const player = new Player(name, 0)
+            sessionStorage.setItem('player', JSON.stringify(player));
+            document.getElementById("displayName").innerText = player.name;
             modal.style.display = "none"; // Close modal
         } else {
             alert("Please enter a name.");
         }
     };
-}
-
-// Function to load name from session storage on page load
-function loadStoredName() {
-    let storedName = sessionStorage.getItem("username");
-    if (storedName) {
-        document.getElementById("displayName").innerText = storedName;
-    }
 }
 
 // Detect "Enter" key press and trigger submit when pressed
@@ -186,9 +193,14 @@ document.getElementById('answerInput').addEventListener('keydown', function(even
 });
 
 window.onload = function() {
+    initModal();
     getScore();
     generateQuestion();
-    initModal();
-    loadStoredName();
 };
 
+class Player {
+    constructor(name, score) {
+        this.name = name;
+        this.score = score;
+    }
+}
