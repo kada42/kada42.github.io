@@ -151,7 +151,6 @@ function initModal() {
 
     if (JSON.parse(sessionStorage.getItem('player') === null)) {
         modal.style.display = "block";
-        //window.oninput.apply()
     }
 
     // Open modal
