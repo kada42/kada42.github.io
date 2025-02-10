@@ -1,7 +1,32 @@
 let correctAnswer;
 let timeLeft = 10;
 let timerInterval;
-let isTimerOn = false;  // Timer is off by default
+let isTimerOn = false;
+let translations = {};
+let currentLang = 'se'; 
+
+// Function to load the selected language file
+function loadTranslations(lang) {
+    fetch(`../translations/${lang}.json`)
+        .then(response => response.json())
+        .then(data => {
+            translations = data;
+            currentLang = lang;
+        })
+        .catch(error => console.error('Error loading translations:', error));
+}
+
+// Function to get translated text
+function t(key) {
+    return translations[key] || key; // Fallback to key if missing
+}
+
+// Function to switch language
+function changeLanguage(lang) {
+    if (lang !== currentLang) {
+        loadTranslations(lang);
+    }
+}
 
 function generateQuestion() {
     let num1 = Math.floor(Math.random() * 10) + 1; // Random number from 1 to 10
@@ -81,14 +106,14 @@ function checkAnswer() {
     const parsedAnswer = parseInt(userAnswer, 10); // Convert the input to an integer
 
     if (userAnswer === "" || isNaN(parsedAnswer)) {
-        showModal('Vänligen ange en siffra...', false);
+        showModal(t('answerModalError'), false);
     } else if (parsedAnswer === correctAnswer) {
-        showModal('Rätt svar! 😊🤩', true);
+        showModal(t('answerModalSuccess'), true);
         updateScore();
         clearInterval(timerInterval);
         setTimeout(generateQuestion, 1000); // Wait 1 second before showing a new question
     } else {
-        showModal('Prova igen! 🤗', false);
+        showModal(t('answerModalFailure'), false);
     }
 }
 
@@ -115,7 +140,7 @@ function startTimer() {
         document.getElementById('timer').innerText = timeLeft;
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
-            document.getElementById('message').innerText = "Tiden är ute!";
+            document.getElementById('message').innerText = t('timerTimesUp');
             setTimeout(generateQuestion, 1000); // Wait 1 second before showing a new question
         }
     }, 1000);
@@ -124,7 +149,7 @@ function startTimer() {
 function resetTimer() {
     clearInterval(timerInterval);
     timeLeft = 10;
-    document.getElementById('timeleft').innerText = 'Tid kvar: '
+    document.getElementById('timeleft').innerText = t('timerTimeLeft');
     document.getElementById('timer').innerText = timeLeft;
     startTimer();
 }
@@ -132,11 +157,11 @@ function resetTimer() {
 function toggleTimer() {
     isTimerOn = !isTimerOn;
     if (isTimerOn) {
-        document.getElementById('toggleTimerBtn').innerText = "Stoppa timer";
+        document.getElementById('toggleTimerBtn').innerText = t('timerStop');
         document.getElementById('timer').innerText = timeLeft;
         resetTimer();
     } else {
-        document.getElementById('toggleTimerBtn').innerText = "Starta timer";
+        document.getElementById('toggleTimerBtn').innerText = t('timerStart');
         clearInterval(timerInterval);
         document.getElementById('timer').innerText = ''; // Hide the timer display
     }
@@ -183,7 +208,7 @@ function initModal() {
             document.getElementById('score').innerText = player.score;
             modal.style.display = "none"; // Close modal
         } else {
-            alert("Please enter a name.");
+            alert(t('modalAlert'));
         }
     };
 }
@@ -221,6 +246,11 @@ function loadStoredName() {
     }
 }
 
+function loadTexts() {
+    document.getElementById('headline').innerText = t('title');
+    document.getElementById('newPlayer').innerText = t('newPlayer');
+}
+
 // Detect "Enter" key press and trigger submit when pressed
 document.getElementById('answerInput').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
@@ -230,6 +260,8 @@ document.getElementById('answerInput').addEventListener('keydown', function(even
 
 window.onload = function() {
     //console.log(Object.entries(sessionStorage))
+    loadTranslations(currentLang);
+    //loadTexts(); // why does this not work?
     initModal();
     loadStoredName();
     getScore();

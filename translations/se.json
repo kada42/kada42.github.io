@@ -1,0 +1,12 @@
+{
+    "answerModalError": "Vänligen ange en siffra...",
+    "answerModalSuccess": "Rätt svar! 😊🤩",
+    "answerModalFailure": "Prova igen! 🤗",
+    "timerTimesUp": "Tiden är ute!",
+    "timerTimeLeft": "Tid kvar: ",
+    "timerStop": "Stoppa timer",
+    "timerStart": "Starta timer",
+    "modalAlert": "Vänligen ange ett namn",
+    "title": "Träna Matte",
+    "newPlayer": "Ny spelare"
+}
