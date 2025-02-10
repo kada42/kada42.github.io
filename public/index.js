@@ -174,14 +174,27 @@ function initModal() {
     submitBtn.onclick = function () {
         let name = document.getElementById("nameInput").value;
         if (name.trim() !== "") {
+            console.log(Object.entries(sessionStorage))
             const player = new Player(name, 0)
+            // check if player exists in local storgae
+            // if exists -> load player (?) and close modal and somehow pass on the name to other functions
+            // if not exists -> setItem with players name
             sessionStorage.setItem('player', JSON.stringify(player));
             document.getElementById("displayName").innerText = player.name;
+            document.getElementById('score').innerText = player.score;
             modal.style.display = "none"; // Close modal
         } else {
             alert("Please enter a name.");
         }
     };
+}
+
+// Function to load name from session storage on page load
+function loadStoredName() {
+    let storedName = JSON.parse(sessionStorage.getItem("player"));
+    if (storedName !== null) {
+        document.getElementById("displayName").innerText = storedName.name;
+    }
 }
 
 // Detect "Enter" key press and trigger submit when pressed
@@ -192,7 +205,9 @@ document.getElementById('answerInput').addEventListener('keydown', function(even
 });
 
 window.onload = function() {
+    //console.log(Object.entries(sessionStorage))
     initModal();
+    loadStoredName();
     getScore();
     generateQuestion();
 };
