@@ -49,7 +49,6 @@ function generateQuestion() {
 
     document.getElementById('answerInput').value = '';
     document.getElementById('message').innerText = '';
-    document.getElementById('correctMessage').innerText = ''; // Clear the "Correct!" message
 
     if (inputPosition === 0) {
         document.getElementById('operator').before(document.getElementById('answerInput'));
@@ -82,14 +81,14 @@ function checkAnswer() {
     const parsedAnswer = parseInt(userAnswer, 10); // Convert the input to an integer
 
     if (userAnswer === "" || isNaN(parsedAnswer)) {
-        document.getElementById('message').innerText = 'Vänligen ange en siffra...';
+        showModal('Vänligen ange en siffra...', false);
     } else if (parsedAnswer === correctAnswer) {
-        document.getElementById('correctMessage').innerText = 'Rätt svar! 😊🤩';
-        updateScore()
+        showModal('Rätt svar! 😊🤩', true);
+        updateScore();
         clearInterval(timerInterval);
         setTimeout(generateQuestion, 1000); // Wait 1 second before showing a new question
     } else {
-        document.getElementById('message').innerText = 'Prova igen! 🤗';
+        showModal('Prova igen! 🤗', false);
     }
 }
 
@@ -187,6 +186,31 @@ function initModal() {
             alert("Please enter a name.");
         }
     };
+}
+
+function showModal(message, isSuccess) {
+    const modal = document.getElementById('resultModal');
+    const modalText = document.getElementById('modalText');
+
+    // Set modal message
+    modalText.innerText = message;
+
+    // Add class based on success or failure (optional for styling)
+    if (isSuccess) {
+        modal.classList.add('success');
+        modal.classList.remove('failure');
+    } else {
+        modal.classList.add('failure');
+        modal.classList.remove('success');
+    }
+
+    // Show modal
+    modal.style.display = 'block';
+
+    // Hide modal after 2 seconds
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 1000);
 }
 
 // Function to load name from session storage on page load

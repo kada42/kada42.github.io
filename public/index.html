@@ -16,7 +16,7 @@
         <button class="btn btn-primary mb-2" id="openModalBtn">Enter Name</button>
     </div>
     <p></p>
-    <p class="score"><span id="displayName"></span> poäng: <span id="score"></span></p>
+    <!-- <p class="score"><span id="displayName"></span> poäng: <strong><span id="score"></span></strong></p> -->
     <button class="btn btn-secondary mb-2" id="toggleTimerBtn" onclick="toggleTimer()">Starta timer</button>
     <p class="timer"><span id="timeleft"></span> <span id="timer"></span></p>
     <div class="equation">
@@ -28,8 +28,11 @@
         <span id="result" class="fs-4"></span>
     </div>
     <button class="btn btn-primary mt-3" id="submitBtn" onclick="checkAnswer()">Rätta</button>
+    <div>
+        <p class="score"><span id="displayName"></span> poäng: <strong><span id="score"></span></strong></p>
+    </div>
+    
     <p class="message" id="message"></p>
-    <p class="correct" id="correctMessage"></p>
 
     <!-- Modal Structure -->
     <div id="nameModal" class="modal">
@@ -39,6 +42,11 @@
             <br>
             <button class="btn btn-primary mb-2" id="submitName">Submit</button>
             <button class="btn btn-warning mb-2" id="closeModal">Close</button>
+        </div>
+    </div>
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <p id="modalText"></p>
         </div>
     </div>
 </div>
