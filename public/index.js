@@ -7,7 +7,7 @@ let currentLang = 'se';
 
 // Function to load the selected language file
 function loadTranslations(lang) {
-    fetch(`../translations/${lang}.json`)
+    fetch(`./translations/${lang}.json`)
         .then(response => response.json())
         .then(data => {
             translations = data;
