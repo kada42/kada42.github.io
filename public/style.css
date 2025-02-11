@@ -93,9 +93,11 @@ body {
 .success {
     color: green;
 	font-size: x-large;
+	font-weight: bold;
 }
 
 .failure {
     color: red;
 	font-size: larger;
+	font-weight: bold;
 }

@@ -8,5 +8,11 @@
     "timerStart": "Starta timer",
     "modalAlert": "Vänligen ange ett namn",
     "title": "Träna Matte",
-    "newPlayer": "Ny spelare"
+    "newPlayer": "Ny spelare",
+    "submitButton": "Rätta",
+    "modalHeadLine": "Skriv in ditt namn",
+    "modalSubmitName": "Bekräfta",
+    "modalClose": "Stäng",
+    "displayNameScore": " poäng: "
+
 }

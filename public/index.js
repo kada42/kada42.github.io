@@ -12,6 +12,7 @@ function loadTranslations(lang) {
         .then(data => {
             translations = data;
             currentLang = lang;
+            loadExternalTexts();
         })
         .catch(error => console.error('Error loading translations:', error));
 }
@@ -246,9 +247,15 @@ function loadStoredName() {
     }
 }
 
-function loadTexts() {
+function loadExternalTexts() {
     document.getElementById('headline').innerText = t('title');
     document.getElementById('newPlayer').innerText = t('newPlayer');
+    document.getElementById('toggleTimerBtn').innerText = t('timerStart');
+    document.getElementById('submitBtn').innerText = t('submitButton')
+    document.getElementById('modalHeadLine').innerText = t('modalHeadLine')
+    document.getElementById('submitName').innerText = t('modalSubmitName')
+    document.getElementById('closeModal').innerText = t('modalClose')
+    document.getElementById('displayNameScore').innerText = t('displayNameScore')
 }
 
 // Detect "Enter" key press and trigger submit when pressed
@@ -261,7 +268,6 @@ document.getElementById('answerInput').addEventListener('keydown', function(even
 window.onload = function() {
     //console.log(Object.entries(sessionStorage))
     loadTranslations(currentLang);
-    //loadTexts(); // why does this not work?
     initModal();
     loadStoredName();
     getScore();

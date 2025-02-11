@@ -10,13 +10,13 @@
 <body>
 
 <div class="container">
-    <h1><span id="headline">Träna matte</span></h1>
+    <h1><span id="headline"></span></h1>
     <div>
         <!-- Button to Open Modal -->
-        <button class="btn btn-primary mb-2" id="openModalBtn"><span id="newPlayer">Ny spelare</span></button>
+        <button class="btn btn-primary mb-2" id="openModalBtn"><span id="newPlayer"></span></button>
     </div>
     <p></p>
-    <button class="btn btn-secondary mb-2" id="toggleTimerBtn" onclick="toggleTimer()">Starta timer</button>
+    <button class="btn btn-secondary mb-2" id="toggleTimerBtn" onclick="toggleTimer()"></button>
     <p class="timer"><span id="timeleft"></span> <span id="timer"></span></p>
     <div class="equation">
         <span id="leftPart" class="fs-4"></span>
@@ -26,9 +26,9 @@
         <input type="number" id="answerInput" class="form-control d-inline" placeholder="">
         <span id="result" class="fs-4"></span>
     </div>
-    <button class="btn btn-primary mt-3" id="submitBtn" onclick="checkAnswer()">Rätta</button>
+    <button class="btn btn-primary mt-3" id="submitBtn" onclick="checkAnswer()"></button>
     <div>
-        <p class="score"><span id="displayName"></span> poäng: <strong><span id="score"></span></strong></p>
+        <p class="score"><span id="displayName"></span><span id="displayNameScore"></span><strong><span id="score"></span></strong></p>
     </div>
     
     <p class="message" id="message"></p>
@@ -36,11 +36,11 @@
     <!-- Modal Structure -->
     <div id="nameModal" class="modal">
         <div class="modal-content">
-            <h2>Enter Your Name</h2>
-            <input type="text" id="nameInput" placeholder="Your Name">
+            <h2 id="modalHeadLine"></h2>
+            <input type="text" id="nameInput" placeholder="Ditt namn">
             <br>
-            <button class="btn btn-primary mb-2" id="submitName">Submit</button>
-            <button class="btn btn-warning mb-2" id="closeModal">Close</button>
+            <button class="btn btn-primary mb-2" id="submitName"></button>
+            <button class="btn btn-warning mb-2" id="closeModal"></button>
         </div>
     </div>
     <div id="resultModal" class="modal">
