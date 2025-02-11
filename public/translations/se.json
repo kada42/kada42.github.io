@@ -2,6 +2,7 @@
     "answerModalError": "Vänligen ange en siffra...",
     "answerModalSuccess": "Rätt svar! 😊🤩",
     "answerModalFailure": "Prova igen! 🤗",
+    "answerModalFinalFailure": "Rätt svar var: ",
     "timerTimesUp": "Tiden är ute!",
     "timerTimeLeft": "Tid kvar: ",
     "timerStop": "Stoppa timer",

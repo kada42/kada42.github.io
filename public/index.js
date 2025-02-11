@@ -103,6 +103,7 @@ function populateCalculation(left, right, answer) {
 }
 
 function checkAnswer() {
+    let numberOfTries = sessionStorage.getItem('tries') !== null ? sessionStorage.getItem('tries') : 1
     const userAnswer = document.getElementById('answerInput').value.trim();
     const parsedAnswer = parseInt(userAnswer, 10); // Convert the input to an integer
 
@@ -114,7 +115,16 @@ function checkAnswer() {
         clearInterval(timerInterval);
         setTimeout(generateQuestion, 1000); // Wait 1 second before showing a new question
     } else {
-        showModal(t('answerModalFailure'), false);
+        if (numberOfTries < 3) {
+            numberOfTries++;
+            sessionStorage.setItem('tries', numberOfTries)
+            showModal(t('answerModalFailure'), false);
+        } else {
+            sessionStorage.setItem('tries', 1)
+            showModal(t('answerModalFinalFailure'), false, correctAnswer);
+            // enable new question
+            generateQuestion()
+        }
     }
 }
 
@@ -199,7 +209,7 @@ function initModal() {
     submitBtn.onclick = function () {
         let name = document.getElementById("nameInput").value;
         if (name.trim() !== "") {
-            console.log(Object.entries(sessionStorage))
+            //console.log(Object.entries(sessionStorage))
             const player = new Player(name, 0)
             // check if player exists in local storgae
             // if exists -> load player (?) and close modal and somehow pass on the name to other functions
@@ -214,9 +224,10 @@ function initModal() {
     };
 }
 
-function showModal(message, isSuccess) {
+function showModal(message, isSuccess, correctAnswer) {
     const modal = document.getElementById('resultModal');
     const modalText = document.getElementById('modalText');
+    let timeout = 1000;
 
     // Set modal message
     modalText.innerText = message;
@@ -225,7 +236,12 @@ function showModal(message, isSuccess) {
     if (isSuccess) {
         modal.classList.add('success');
         modal.classList.remove('failure');
+    } else if (!isSuccess && correctAnswer === undefined) {
+        modal.classList.add('failure');
+        modal.classList.remove('success');
     } else {
+        modalText.innerText = modalText.innerText + `\n${correctAnswer}`;
+        timeout = 1500;
         modal.classList.add('failure');
         modal.classList.remove('success');
     }
@@ -236,7 +252,7 @@ function showModal(message, isSuccess) {
     // Hide modal after 2 seconds
     setTimeout(() => {
         modal.style.display = 'none';
-    }, 1000);
+    }, timeout);
 }
 
 // Function to load name from session storage on page load
