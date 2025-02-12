@@ -59,7 +59,7 @@ body {
 /* Modal Styles */
 .modal {
 	display: none; /* Hidden by default */
-	position: fixed;
+	position:absolute;
 	z-index: 1000;
 	left: 0;
 	top: 0;
