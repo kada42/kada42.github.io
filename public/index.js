@@ -128,11 +128,6 @@ function checkAnswer() {
     }
 }
 
-function checkIfPlayerExists(player) {
-    const checkPlayer = JSON.parse(sessionStorage.getItem(player))
-    // check if player exists
-}
-
 function getScore() {
     const player = JSON.parse(sessionStorage.getItem('player'))
     player !== null ? document.getElementById("score").innerText = player.score : '0' 
@@ -184,13 +179,14 @@ function initModal() {
     let closeBtn = document.getElementById("closeModal");
     let submitBtn = document.getElementById("submitName");
 
-    if (JSON.parse(sessionStorage.getItem('player') === null)) {
+    if (JSON.parse(sessionStorage.getItem(get('activePlayer')) === null)) {
         modal.style.display = "block";
     }
 
     // Open modal
     openBtn.onclick = function () {
         modal.style.display = "block";
+        document.getElementById("nameInput").value = ''
     };
 
     // Close modal
@@ -200,7 +196,7 @@ function initModal() {
 
     // Close modal if clicking outside of modal content
     window.onclick = function (event) {
-        if (event.target === modal) {
+        if (event.target === modal && document.getElementById("nameInput").value !== '') {
             modal.style.display = "none";
         }
     };
