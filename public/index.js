@@ -4,6 +4,7 @@ let timerInterval;
 let isTimerOn = false;
 let translations = {};
 let currentLang = 'se'; 
+const ACTIVE_PLAYER = 'activePlayer'
 
 // Function to load the selected language file
 function loadTranslations(lang) {
@@ -50,7 +51,7 @@ function generateQuestion() {
         result = num1 - num2;
     }
 
-    document.getElementById('answerInput').style.display = 'inline-block';
+    getElement('answerInput').style.display = 'inline-block';
 
     // Determine where to place the input field
     if (inputPosition === 0) {
@@ -71,40 +72,40 @@ function generateQuestion() {
         populateCalculation(leftPartText, rightPartText, '')
     }
 
-    document.getElementById('operator').innerText = operatorText;
+    getElement('operator').innerText = operatorText;
 
-    document.getElementById('answerInput').value = '';
-    document.getElementById('message').innerText = '';
+    getElement('answerInput').value = '';
+    getElement('message').innerText = '';
 
     if (inputPosition === 0) {
-        document.getElementById('operator').before(document.getElementById('answerInput'));
+        getElement('operator').before(getElement('answerInput'));
     } else if (inputPosition === 1) {
-        document.getElementById('rightPart').before(document.getElementById('answerInput'));
+        getElement('rightPart').before(getElement('answerInput'));
     } else {
-        document.getElementById('result').before(document.getElementById('answerInput'));
+        getElement('result').before(getElement('answerInput'));
     }
 
     // Auto-focus the input field after generating a new question
-    document.getElementById('answerInput').focus();
+    getElement('answerInput').focus();
 
     if (isTimerOn) {
         resetTimer(); // Reset and start the timer for the new question
     } else {
         clearInterval(timerInterval);
-        document.getElementById('timeleft').innerText = ''
-        document.getElementById('timer').innerText = '';
+        getElement('timeleft').innerText = ''
+        getElement('timer').innerText = '';
     }
 }
 
 function populateCalculation(left, right, answer) {
-    document.getElementById('leftPart').innerText = left;
-    document.getElementById('rightPart').innerText = right;
-    document.getElementById('result').innerText = answer;
+    getElement('leftPart').innerText = left;
+    getElement('rightPart').innerText = right;
+    getElement('result').innerText = answer;
 }
 
 function checkAnswer() {
-    let numberOfTries = sessionStorage.getItem('tries') !== null ? sessionStorage.getItem('tries') : 1
-    const userAnswer = document.getElementById('answerInput').value.trim();
+    let numberOfTries = get('tries') !== null ? get('tries') : 1
+    const userAnswer = getElement('answerInput').value.trim();
     const parsedAnswer = parseInt(userAnswer, 10); // Convert the input to an integer
 
     if (userAnswer === "" || isNaN(parsedAnswer)) {
@@ -113,14 +114,15 @@ function checkAnswer() {
         showModal(t('answerModalSuccess'), true);
         updateScore();
         clearInterval(timerInterval);
+        resetTries();
         setTimeout(generateQuestion, 1000); // Wait 1 second before showing a new question
     } else {
         if (numberOfTries < 3) {
             numberOfTries++;
-            sessionStorage.setItem('tries', numberOfTries)
+            set('tries', numberOfTries)
             showModal(t('answerModalFailure'), false);
         } else {
-            sessionStorage.setItem('tries', 1)
+            resetTries();
             showModal(t('answerModalFinalFailure'), false, correctAnswer);
             // enable new question
             generateQuestion()
@@ -129,24 +131,24 @@ function checkAnswer() {
 }
 
 function getScore() {
-    const player = JSON.parse(sessionStorage.getItem('player'))
-    player !== null ? document.getElementById("score").innerText = player.score : '0' 
+    const player = getObject('activePlayer');
+    player !== null ? getElement("score").innerText = player.score : '0' 
 }
 
 function updateScore() {
-    let updatePlayer = getObject(get('activePlayer'))
+    let updatePlayer = getObject('activePlayer')
     updatePlayer.score++;
-    setObject(updatePlayer);
-    document.getElementById("score").innerText = updatePlayer.score
+    setObject(updatePlayer.name, updatePlayer);
+    getElement("score").innerText = updatePlayer.score
 }
 
 function startTimer() {
     timerInterval = setInterval(function () {
         timeLeft--;
-        document.getElementById('timer').innerText = timeLeft;
+        getElement('timer').innerText = timeLeft;
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
-            document.getElementById('message').innerText = t('timerTimesUp');
+            getElement('message').innerText = t('timerTimesUp');
             setTimeout(generateQuestion, 1000); // Wait 1 second before showing a new question
         }
     }, 1000);
@@ -155,42 +157,42 @@ function startTimer() {
 function resetTimer() {
     clearInterval(timerInterval);
     timeLeft = 10;
-    document.getElementById('timeleft').innerText = t('timerTimeLeft');
-    document.getElementById('timer').innerText = timeLeft;
+    getElement('timeleft').innerText = t('timerTimeLeft');
+    getElement('timer').innerText = timeLeft;
     startTimer();
 }
 
 function toggleTimer() {
     isTimerOn = !isTimerOn;
     if (isTimerOn) {
-        document.getElementById('toggleTimerBtn').innerText = t('timerStop');
-        document.getElementById('timer').innerText = timeLeft;
+        getElement('toggleTimerBtn').innerText = t('timerStop');
+        getElement('timer').innerText = timeLeft;
         resetTimer();
     } else {
-        document.getElementById('toggleTimerBtn').innerText = t('timerStart');
+        getElement('toggleTimerBtn').innerText = t('timerStart');
         clearInterval(timerInterval);
-        document.getElementById('timer').innerText = ''; // Hide the timer display
+        getElement('timer').innerText = ''; // Hide the timer display
     }
 }
 
 function initModal() {
-    let modal = document.getElementById("nameModal");
-    let openBtn = document.getElementById("openModalBtn");
-    let closeBtn = document.getElementById("closeModal");
-    let submitBtn = document.getElementById("submitName");
+    let modal = getElement("nameModal");
+    let openBtn = getElement("openModalBtn");
+    let closeBtn = getElement("closeModal");
+    let submitBtn = getElement("submitName");
 
-    if (JSON.parse(sessionStorage.getItem(get('activePlayer')) === null)) {
+    if (get('activePlayer') === null) {
         modal.style.display = "block";
     }
 
     // Open modal
     openBtn.onclick = function () {
         modal.style.display = "block";
-        document.getElementById("nameInput").value = ''
+        getElement("nameInput").value = ''
 
         // Wait a short time before focusing to ensure it's visible
         setTimeout(() => {
-            document.getElementById("nameInput").focus();
+            getElement("nameInput").focus();
         }, 50); 
     };
 
@@ -201,14 +203,14 @@ function initModal() {
 
     // Close modal if clicking outside of modal content
     window.onclick = function (event) {
-        if (event.target === modal && document.getElementById("nameInput").value !== '') {
+        if (event.target === modal && getElement("nameInput").value !== '') {
             modal.style.display = "none";
         }
     };
 
     // Submit name and store in session storage
     submitBtn.onclick = function () {
-        let name = document.getElementById("nameInput").value;
+        let name = getElement("nameInput").value;
         if (name.trim() !== "") {
             let player;
             const playerExists = Object.entries(sessionStorage).some(([key, value]) => {
@@ -223,16 +225,17 @@ function initModal() {
             });
 
             if (playerExists) {
-                player = getObject(name)
+                player = get(name)
                 activePlayer(name)
             } else {
                 player = new Player(name, 0)
-                sessionStorage.setItem(name, JSON.stringify(player));
+                setObject(name, player);
                 activePlayer(name)
             }
-            
-            document.getElementById("displayName").innerText = player.name;
-            document.getElementById('score').innerText = player.score;
+
+            resetTries();
+            getElement("displayName").innerText = player.name;
+            getElement('score').innerText = player.score;
             modal.style.display = "none"; // Close modal
         } else {
             alert(t('modalAlert'));
@@ -242,16 +245,20 @@ function initModal() {
 
 function activePlayer(playerName) {
     if (playerName == null || playerName == undefined) {
-        return sessionStorage.getItem('activePlayer');
+        return get('activePlayer');
     } else {
-        sessionStorage.setItem('activePlayer', playerName);
+        setObject('activePlayer', playerName);
     }
 
 }
 
+function resetTries() {
+    set('tries', 1);
+}
+
 function showModal(message, isSuccess, correctAnswer) {
-    const modal = document.getElementById('resultModal');
-    const modalText = document.getElementById('modalText');
+    const modal = getElement('resultModal');
+    const modalText = getElement('modalText');
     let timeout = 1000;
 
     // Set modal message
@@ -281,57 +288,54 @@ function showModal(message, isSuccess, correctAnswer) {
 }
 
 function get(value) {
-    return sessionStorage.getItem(value);
+    return JSON.parse(sessionStorage.getItem(value));
 }
 
-function getObject(object) {
-    return JSON.parse(sessionStorage.getItem(object));
+function getObject(player) {
+    const key = get(player);
+    return JSON.parse(sessionStorage.getItem(key));
 }
 
-function set(value) {
-
+function set(key, value) {
+    sessionStorage.setItem(key, value)
 }
 
-function setObject(object) {
-    sessionStorage.setItem(object.name, JSON.stringify(object))
+function setObject(key, value) {
+    sessionStorage.setItem(key, JSON.stringify(value))
 }
 
 function getElement(element) {
-    return;
-}
-
-function setElement(element, text, isTranslation) {
-
+    return document.getElementById(element);
 }
 
 // Function to load name from session storage on page load
 function loadStoredName() {
-    let storedName = JSON.parse(sessionStorage.getItem("player"));
+    let storedName = getObject('activePlayer');
     if (storedName !== null) {
-        document.getElementById("displayName").innerText = storedName.name;
+        getElement("displayName").innerText = storedName.name;
     }
 }
 
 function loadExternalTexts() {
-    document.getElementById('headline').innerText = t('title');
-    document.getElementById('newPlayer').innerText = t('newPlayer');
-    document.getElementById('toggleTimerBtn').innerText = t('timerStart');
-    document.getElementById('submitBtn').innerText = t('submitButton')
-    document.getElementById('modalHeadLine').innerText = t('modalHeadLine')
-    document.getElementById('submitName').innerText = t('modalSubmitName')
-    document.getElementById('closeModal').innerText = t('modalClose')
-    document.getElementById('displayNameScore').innerText = t('displayNameScore')
+    getElement('headline').innerText = t('title');
+    getElement('newPlayer').innerText = t('newPlayer');
+    getElement('toggleTimerBtn').innerText = t('timerStart');
+    getElement('submitBtn').innerText = t('submitButton')
+    getElement('modalHeadLine').innerText = t('modalHeadLine')
+    getElement('submitName').innerText = t('modalSubmitName')
+    getElement('closeModal').innerText = t('modalClose')
+    getElement('displayNameScore').innerText = t('displayNameScore')
 }
 
 // Detect "Enter" key press and trigger submit when pressed
-document.getElementById('answerInput').addEventListener('keydown', function(event) {
+getElement('answerInput').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
-        document.getElementById('submitBtn').click(); // Simulate submit button click
+        getElement('submitBtn').click(); // Simulate submit button click
     }
 });
 
 window.addEventListener('resize', () => {
-    const modal = document.getElementById('modal-content');
+    const modal = getElement('modal-content');
     if (modal) {
         modal.style.top = `${window.innerHeight / 2}px`;
     }
@@ -339,7 +343,6 @@ window.addEventListener('resize', () => {
 
 
 window.onload = function() {
-    //console.log(Object.entries(sessionStorage))
     loadTranslations(currentLang);
     initModal();
     loadStoredName();
