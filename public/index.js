@@ -329,6 +329,14 @@ document.getElementById('answerInput').addEventListener('keydown', function(even
     }
 });
 
+window.addEventListener('resize', () => {
+    const modal = document.getElementById('modal-content');
+    if (modal) {
+        modal.style.top = `${window.innerHeight / 2}px`;
+    }
+});
+
+
 window.onload = function() {
     //console.log(Object.entries(sessionStorage))
     loadTranslations(currentLang);
