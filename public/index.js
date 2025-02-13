@@ -5,6 +5,7 @@ let isTimerOn = false;
 let translations = {};
 let currentLang = 'se'; 
 const ACTIVE_PLAYER = 'activePlayer'
+const ANSWER_INPUT = 'answerInput'
 
 // Function to load the selected language file
 function loadTranslations(lang) {
@@ -30,6 +31,17 @@ function changeLanguage(lang) {
     }
 }
 
+function loadExternalTexts() {
+    getElement('headline').innerText = t('title');
+    getElement('newPlayer').innerText = t('newPlayer');
+    getElement('toggleTimerBtn').innerText = t('timerStart');
+    getElement('submitBtn').innerText = t('submitButton')
+    getElement('modalHeadLine').innerText = t('modalHeadLine')
+    getElement('submitName').innerText = t('modalSubmitName')
+    getElement('closeModal').innerText = t('modalClose')
+    getElement('displayNameScore').innerText = t('displayNameScore')
+}
+
 function generateQuestion() {
     let num1 = Math.floor(Math.random() * 10) + 1; // Random number from 1 to 10
     let num2 = Math.floor(Math.random() * 10) + 1; // Random number from 1 to 10
@@ -51,7 +63,7 @@ function generateQuestion() {
         result = num1 - num2;
     }
 
-    getElement('answerInput').style.display = 'inline-block';
+    getElement(ANSWER_INPUT).style.display = 'inline-block';
 
     // Determine where to place the input field
     if (inputPosition === 0) {
@@ -74,19 +86,19 @@ function generateQuestion() {
 
     getElement('operator').innerText = operatorText;
 
-    getElement('answerInput').value = '';
+    getElement(ANSWER_INPUT).value = '';
     getElement('message').innerText = '';
 
     if (inputPosition === 0) {
-        getElement('operator').before(getElement('answerInput'));
+        getElement('operator').before(getElement(ANSWER_INPUT));
     } else if (inputPosition === 1) {
-        getElement('rightPart').before(getElement('answerInput'));
+        getElement('rightPart').before(getElement(ANSWER_INPUT));
     } else {
-        getElement('result').before(getElement('answerInput'));
+        getElement('result').before(getElement(ANSWER_INPUT));
     }
 
     // Auto-focus the input field after generating a new question
-    getElement('answerInput').focus();
+    getElement(ANSWER_INPUT).focus();
 
     if (isTimerOn) {
         resetTimer(); // Reset and start the timer for the new question
@@ -105,7 +117,7 @@ function populateCalculation(left, right, answer) {
 
 function checkAnswer() {
     let numberOfTries = get('tries') !== null ? get('tries') : 1
-    const userAnswer = getElement('answerInput').value.trim();
+    const userAnswer = getElement(ANSWER_INPUT).value.trim();
     const parsedAnswer = parseInt(userAnswer, 10); // Convert the input to an integer
 
     if (userAnswer === "" || isNaN(parsedAnswer)) {
@@ -130,13 +142,34 @@ function checkAnswer() {
     }
 }
 
+// Function to load name from session storage on page load
+function loadStoredName() {
+    let storedName = getObject(ACTIVE_PLAYER);
+    if (storedName !== null) {
+        getElement("displayName").innerText = storedName.name;
+    }
+}
+
+function activePlayer(playerName) {
+    if (playerName == null || playerName == undefined) {
+        return get(ACTIVE_PLAYER);
+    } else {
+        setObject(ACTIVE_PLAYER, playerName);
+    }
+
+}
+
+function resetTries() {
+    set('tries', 1);
+}
+
 function getScore() {
-    const player = getObject('activePlayer');
+    const player = getObject(ACTIVE_PLAYER);
     player !== null ? getElement("score").innerText = player.score : '0' 
 }
 
 function updateScore() {
-    let updatePlayer = getObject('activePlayer')
+    let updatePlayer = getObject(ACTIVE_PLAYER)
     updatePlayer.score++;
     setObject(updatePlayer.name, updatePlayer);
     getElement("score").innerText = updatePlayer.score
@@ -181,7 +214,7 @@ function initModal() {
     let closeBtn = getElement("closeModal");
     let submitBtn = getElement("submitName");
 
-    if (get('activePlayer') === null) {
+    if (get(ACTIVE_PLAYER) === null) {
         modal.style.display = "block";
     }
 
@@ -243,19 +276,6 @@ function initModal() {
     };
 }
 
-function activePlayer(playerName) {
-    if (playerName == null || playerName == undefined) {
-        return get('activePlayer');
-    } else {
-        setObject('activePlayer', playerName);
-    }
-
-}
-
-function resetTries() {
-    set('tries', 1);
-}
-
 function showModal(message, isSuccess, correctAnswer) {
     const modal = getElement('resultModal');
     const modalText = getElement('modalText');
@@ -308,27 +328,8 @@ function getElement(element) {
     return document.getElementById(element);
 }
 
-// Function to load name from session storage on page load
-function loadStoredName() {
-    let storedName = getObject('activePlayer');
-    if (storedName !== null) {
-        getElement("displayName").innerText = storedName.name;
-    }
-}
-
-function loadExternalTexts() {
-    getElement('headline').innerText = t('title');
-    getElement('newPlayer').innerText = t('newPlayer');
-    getElement('toggleTimerBtn').innerText = t('timerStart');
-    getElement('submitBtn').innerText = t('submitButton')
-    getElement('modalHeadLine').innerText = t('modalHeadLine')
-    getElement('submitName').innerText = t('modalSubmitName')
-    getElement('closeModal').innerText = t('modalClose')
-    getElement('displayNameScore').innerText = t('displayNameScore')
-}
-
 // Detect "Enter" key press and trigger submit when pressed
-getElement('answerInput').addEventListener('keydown', function(event) {
+getElement(ANSWER_INPUT).addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         getElement('submitBtn').click(); // Simulate submit button click
     }
