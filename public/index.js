@@ -139,9 +139,9 @@ function getScore() {
 }
 
 function updateScore() {
-    let updatePlayer = JSON.parse(sessionStorage.getItem('player'));
+    let updatePlayer = getObject(get('activePlayer'))
     updatePlayer.score++;
-    sessionStorage.setItem('player', JSON.stringify(updatePlayer));
+    setObject(updatePlayer);
     document.getElementById("score").innerText = updatePlayer.score
 }
 
@@ -209,12 +209,27 @@ function initModal() {
     submitBtn.onclick = function () {
         let name = document.getElementById("nameInput").value;
         if (name.trim() !== "") {
-            //console.log(Object.entries(sessionStorage))
-            const player = new Player(name, 0)
-            // check if player exists in local storgae
-            // if exists -> load player (?) and close modal and somehow pass on the name to other functions
-            // if not exists -> setItem with players name
-            sessionStorage.setItem('player', JSON.stringify(player));
+            let player;
+            const playerExists = Object.entries(sessionStorage).some(([key, value]) => {
+                try {
+                    const storedPlayer = JSON.parse(value);
+                    if (storedPlayer.name !== null || storedPlayer.name !== undefined) {
+                        return storedPlayer.name === name;
+                    }
+                } catch (e) {
+                    return false; // Skip invalid JSON entries
+                }
+            });
+
+            if (playerExists) {
+                player = getObject(name)
+                activePlayer(name)
+            } else {
+                player = new Player(name, 0)
+                sessionStorage.setItem(name, JSON.stringify(player));
+                activePlayer(name)
+            }
+            
             document.getElementById("displayName").innerText = player.name;
             document.getElementById('score').innerText = player.score;
             modal.style.display = "none"; // Close modal
@@ -222,6 +237,15 @@ function initModal() {
             alert(t('modalAlert'));
         }
     };
+}
+
+function activePlayer(playerName) {
+    if (playerName == null || playerName == undefined) {
+        return sessionStorage.getItem('activePlayer');
+    } else {
+        sessionStorage.setItem('activePlayer', playerName);
+    }
+
 }
 
 function showModal(message, isSuccess, correctAnswer) {
@@ -253,6 +277,30 @@ function showModal(message, isSuccess, correctAnswer) {
     setTimeout(() => {
         modal.style.display = 'none';
     }, timeout);
+}
+
+function get(value) {
+    return sessionStorage.getItem(value);
+}
+
+function getObject(object) {
+    return JSON.parse(sessionStorage.getItem(object));
+}
+
+function set(value) {
+
+}
+
+function setObject(object) {
+    sessionStorage.setItem(object.name, JSON.stringify(object))
+}
+
+function getElement(element) {
+    return;
+}
+
+function setElement(element, text, isTranslation) {
+
 }
 
 // Function to load name from session storage on page load
