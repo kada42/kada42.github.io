@@ -187,6 +187,11 @@ function initModal() {
     openBtn.onclick = function () {
         modal.style.display = "block";
         document.getElementById("nameInput").value = ''
+
+        // Wait a short time before focusing to ensure it's visible
+        setTimeout(() => {
+            document.getElementById("nameInput").focus();
+        }, 50); 
     };
 
     // Close modal
