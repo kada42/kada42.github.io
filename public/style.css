@@ -56,10 +56,16 @@ body {
 	color: #f58157;
 }
 
+#level, #level-value {
+	font-weight: bold;
+	font-size: 1.2em;
+	color: #007bff;
+}
+
 /* Modal Styles */
 .modal {
 	display: none; /* Hidden by default */
-	position:absolute;
+	position: fixed;
 	z-index: 1000;
 	left: 0;
 	top: 0;
