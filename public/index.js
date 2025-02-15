@@ -55,13 +55,13 @@ function loadStoredName() {
 }
 
 function generateQuestion() {
-    const player = getObject(ACTIVE_PLAYER)
     let num1;
     let num2;
-    if (player.level === LEVEL_THREE) {
+    const player = getObject(ACTIVE_PLAYER)
+    if (player != null && player.level === LEVEL_THREE) {
         num1 = Math.floor(Math.random() * 30) + 1; // Random number from 1 to 30
         num2 = Math.floor(Math.random() * 30) + 1; // Random number from 1 to 30
-    } else if (player.level === LEVEL_TWO) {
+    } else if (player != null && player.level === LEVEL_TWO) {
         num1 = Math.floor(Math.random() * 20) + 1; // Random number from 1 to 20
         num2 = Math.floor(Math.random() * 20) + 1; // Random number from 1 to 20
     } else {
@@ -177,9 +177,10 @@ function resetTries() {
     set('tries', 1);
 }
 
-function getScore() {
+function getScoreAndLevel() {
     const player = getObject(ACTIVE_PLAYER);
     player !== null ? getElement('score').innerText = player.score : '0' 
+    player !== null ? getElement('level-value').innerText = player.level : LEVEL_ONE 
 }
 
 function updateScore() {
@@ -190,7 +191,8 @@ function updateScore() {
     else if (score == 30) updatePlayer.level = LEVEL_THREE
     setObject(updatePlayer.name, updatePlayer);
     getElement('score').innerText = updatePlayer.score
-    //getElement('level-value').innerText = updatePlayer.level
+    console.log(updatePlayer.level)
+    getElement('level-value').innerText = updatePlayer.level
 }
 
 function startTimer() {
@@ -287,6 +289,7 @@ function initModal() {
             resetTries();
             getElement('displayName').innerText = player.name;
             getElement('score').innerText = player.score;
+            getElement('level-value').innerText = player.level;
             modal.style.display = 'none'; // Close modal
         } else {
             alert(t('modalAlert'));
@@ -365,7 +368,7 @@ window.onload = function() {
     loadTranslations(currentLang);
     initModal();
     loadStoredName();
-    getScore();
+    getScoreAndLevel();
     generateQuestion();
 };
 
