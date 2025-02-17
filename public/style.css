@@ -24,7 +24,7 @@ body {
 	max-width: 400px;
 	text-align: center;
 	padding: 20px;
-	border: 2px solid #007bff;
+	border: 2px solid #6e6a3e;
 	border-radius: 10px;
 	background-color: rgb(251, 252, 244);
 }
@@ -60,7 +60,7 @@ body {
 
 .score {
 	font-size: 1.2em;
-	color: #007bff;
+	color: #6e6a3e;
 	margin-top: 20px;
 }
 
@@ -72,7 +72,7 @@ body {
 #level, #level-value {
 	font-weight: bold;
 	font-size: 1.2em;
-	color: #007bff;
+	color: #6e6a3e;
 }
 
 /* Modal Styles */
@@ -89,7 +89,7 @@ body {
 }
 
 .modal-content {
-	background-color: white;
+	background-color: rgb(251, 252, 244);
 	margin: 15% auto;
 	padding: 20px;
 	border-radius: 10px;
