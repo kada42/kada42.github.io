@@ -187,12 +187,22 @@ function updateScore() {
     let updatePlayer = getObject(ACTIVE_PLAYER)
     updatePlayer.score++;
     const score = updatePlayer.score;
-    if (score == 15) updatePlayer.level = LEVEL_TWO
-    else if (score == 30) updatePlayer.level = LEVEL_THREE
+    if (score == 15){
+        updatePlayer.level = LEVEL_TWO
+        setLevel()
+    } else if (score == 30) {
+        updatePlayer.level = LEVEL_THREE 
+        setLevel()
+    }
+
     setObject(updatePlayer.name, updatePlayer);
     getElement('score').innerText = updatePlayer.score
     console.log(updatePlayer.level)
     getElement('level-value').innerText = updatePlayer.level
+}
+
+function setLevel() {
+    showModal(t('levelModalText'), true)
 }
 
 function startTimer() {

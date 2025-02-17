@@ -15,5 +15,6 @@
     "modalSubmitName": "Bekräfta",
     "modalClose": "Stäng",
     "displayNameScore": " poäng: ",
-    "level": "🚀 Level: "
+    "level": "🚀 Level: ",
+    "levelModalText": "Du har nått en ny level! 🤩💫"
 }
