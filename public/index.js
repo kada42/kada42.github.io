@@ -6,9 +6,11 @@ let translations = {};
 let currentLang = 'se'; 
 const ACTIVE_PLAYER = 'activePlayer'
 const ANSWER_INPUT = 'answerInput'
-const LEVEL_ONE = 1
-const LEVEL_TWO = 2
-const LEVEL_THREE = 3
+const LEVEL_ONE = [1, 10]
+const LEVEL_TWO = [2, 15]
+const LEVEL_THREE = [3, 20]
+const LEVEL_FOUR = [4, 25]
+const LEVEL_FIVE = [5, 30]
 
 // Function to load the selected language file
 function loadTranslations(lang) {
@@ -58,15 +60,21 @@ function generateQuestion() {
     let num1;
     let num2;
     const player = getObject(ACTIVE_PLAYER)
-    if (player != null && player.level === LEVEL_THREE) {
-        num1 = Math.floor(Math.random() * 30) + 1; // Random number from 1 to 30
-        num2 = Math.floor(Math.random() * 30) + 1; // Random number from 1 to 30
-    } else if (player != null && player.level === LEVEL_TWO) {
-        num1 = Math.floor(Math.random() * 20) + 1; // Random number from 1 to 20
-        num2 = Math.floor(Math.random() * 20) + 1; // Random number from 1 to 20
+    if (player != null && player.level === LEVEL_FIVE[0]) {
+        num1 = Math.floor(Math.random() * LEVEL_FIVE[1]) + 1; 
+        num2 = Math.floor(Math.random() * LEVEL_FIVE[1]) + 1; 
+    } else if (player != null && player.level === LEVEL_FOUR[0]) {
+        num1 = Math.floor(Math.random() * LEVEL_FOUR[1]) + 1; 
+        num2 = Math.floor(Math.random() * LEVEL_FOUR[1]) + 1; 
+    } else if (player != null && player.level === LEVEL_THREE[0]) {
+        num1 = Math.floor(Math.random() * LEVEL_THREE[1]) + 1; 
+        num2 = Math.floor(Math.random() * LEVEL_THREE[1]) + 1; 
+    } else if (player != null && player.level === LEVEL_TWO[0]) {
+        num1 = Math.floor(Math.random() * LEVEL_TWO[1]) + 1; 
+        num2 = Math.floor(Math.random() * LEVEL_TWO[1]) + 1; 
     } else {
-        num1 = Math.floor(Math.random() * 10) + 1; // Random number from 1 to 10
-        num2 = Math.floor(Math.random() * 10) + 1; // Random number from 1 to 10
+        num1 = Math.floor(Math.random() * LEVEL_ONE[1]) + 1; // Random number from 1 to level
+        num2 = Math.floor(Math.random() * LEVEL_ONE[1]) + 1; // Random number from 1 to level
     }
     const isAddition = Math.random() > 0.5;
     const inputPosition = Math.floor(Math.random() * 3); // 0: first operand, 1: second operand, 2: result
@@ -180,24 +188,30 @@ function resetTries() {
 function getScoreAndLevel() {
     const player = getObject(ACTIVE_PLAYER);
     player !== null ? getElement('score').innerText = player.score : '0' 
-    player !== null ? getElement('level-value').innerText = player.level : LEVEL_ONE 
+    console.log( player.level )
+    player !== null ? getElement('level-value').innerText = player.level : LEVEL_ONE[0]
 }
 
 function updateScore() {
     let updatePlayer = getObject(ACTIVE_PLAYER)
     updatePlayer.score++;
     const score = updatePlayer.score;
-    if (score == 15){
-        updatePlayer.level = LEVEL_TWO
+    if (score == 10){
+        updatePlayer.level = LEVEL_TWO[0]
+        setLevel()
+    } else if (score == 20) {
+        updatePlayer.level = LEVEL_THREE[0]
         setLevel()
     } else if (score == 30) {
-        updatePlayer.level = LEVEL_THREE 
+        updatePlayer.level = LEVEL_FOUR[0]
+        setLevel()
+    } else if (score == 40) {
+        updatePlayer.level = LEVEL_FIVE[0]
         setLevel()
     }
 
     setObject(updatePlayer.name, updatePlayer);
     getElement('score').innerText = updatePlayer.score
-    console.log(updatePlayer.level)
     getElement('level-value').innerText = updatePlayer.level
 }
 
@@ -291,7 +305,7 @@ function initModal() {
                 player = get(name)
                 activePlayer(name)
             } else {
-                player = new Player(name, 0, LEVEL_ONE)
+                player = new Player(name, 0, LEVEL_ONE[0])
                 setObject(name, player);
                 activePlayer(name)
             }
