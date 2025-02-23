@@ -187,8 +187,7 @@ function resetTries() {
 
 function getScoreAndLevel() {
     const player = getObject(ACTIVE_PLAYER);
-    player !== null ? getElement('score').innerText = player.score : '0' 
-    console.log( player.level )
+    player !== null ? getElement('score').innerText = player.score : '0'
     player !== null ? getElement('level-value').innerText = player.level : LEVEL_ONE[0]
 }
 
@@ -351,6 +350,31 @@ function showModal(message, isSuccess, correctAnswer) {
         modal.style.display = 'none';
     }, timeout);
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const infoButton = getElement("infoButton");
+    const modal = getElement("infoModal");
+    const closeButton = modal.querySelector(".close-btn");
+
+    // Show modal when clicking info button
+    infoButton.addEventListener("click", () => {
+        getElement('info-headline').innerText = t('infoHeadline')
+        getElement('info-text').innerText = t('infoText')
+        modal.style.display = "flex";
+    });
+
+    // Close modal when clicking the close button
+    /* closeButton.addEventListener("click", () => {
+        modal.style.display = "none";
+    }); */
+
+    // Close modal when clicking outside the content
+    window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+});
 
 function get(value) {
     return JSON.parse(sessionStorage.getItem(value));

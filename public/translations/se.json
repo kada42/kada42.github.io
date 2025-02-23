@@ -9,12 +9,14 @@
     "timerStart": "Starta timer",
     "modalAlert": "Vänligen ange ett namn",
     "title": "👩‍🔬MerMatte👨‍🔬",
-    "newPlayer": "Ny spelare",
+    "newPlayer": "Ny/byt spelare",
     "submitButton": "Rätta",
     "modalHeadLine": "Skriv in ditt namn",
     "modalSubmitName": "Bekräfta",
     "modalClose": "Stäng",
     "displayNameScore": " poäng: ",
     "level": "🚀 Level: ",
-    "levelModalText": "Du har nått en ny level! 🤩💫"
+    "levelModalText": "Du har nått en ny level! 🤩💫",
+    "infoHeadline": "Välkommen till MerMatte! 🧮✨",
+    "infoText": "I denna app får du slumpmässiga räkneuppgifter där både talen och vad du ska fylla i (summan eller ett av talen) varierar varje gång. \nDet gör att du får en ny utmaning vid varje försök!\n\nDina poäng och spelarinformation sparas under tiden du spelar, men försvinner om du stänger fliken eller webbläsaren.\nSkriv in en spelares namn igenom för att återgå till den spelaren. \n\nKända fel:\nPlaceringen av svarsfönstret är inte alltid centrerat.\n\nLycka till! 🚀"
 }
