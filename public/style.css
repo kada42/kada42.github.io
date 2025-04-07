@@ -4,20 +4,25 @@ body {
 	align-items: center;
 	height: 100vh;
 	background-color: #f0f8ff;
-	font-family: 'Courier New', Courier, monospace;
-	background: url('resources/bg.png') no-repeat center center fixed;
-    background-size: cover; /* Ensures the image covers the entire screen */
+	font-family: "Courier New", Courier, monospace;
+	background: url("resources/bg.png") no-repeat center center fixed;
+	background-size: cover; /* Ensures the image covers the entire screen */
 }
 
 /* Create an overlay to fade the background */
 .background-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Adjust transparency (0 = fully visible, 1 = fully black) */
-    z-index: -1; /* Keeps it behind other content */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(
+		0,
+		0,
+		0,
+		0.5
+	); /* Adjust transparency (0 = fully visible, 1 = fully black) */
+	z-index: -1; /* Keeps it behind other content */
 }
 
 .container {
@@ -41,27 +46,27 @@ body {
 
 /* Floating Info Button */
 .info-btn {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s;
+	position: fixed;
+	top: 10px;
+	right: 10px;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	font-size: 20px;
+	font-weight: bold;
+	cursor: pointer;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.3s;
 }
 
 .info-btn:hover {
-    background-color: #0056b3;
+	background-color: #0056b3;
 }
 
 #answerInput {
@@ -94,7 +99,8 @@ body {
 	color: #f58157;
 }
 
-#level, #level-value {
+#level,
+#level-value {
 	font-weight: bold;
 	font-size: 1.2em;
 	color: #6e6a3e;
@@ -110,7 +116,7 @@ body {
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.5);
-	font-family: 'Courier New', Courier, monospace;
+	font-family: "Courier New", Courier, monospace;
 }
 
 .modal-content {
@@ -120,6 +126,7 @@ body {
 	border-radius: 10px;
 	width: 350px;
 	text-align: center;
+	overflow-y: auto;
 }
 
 .modal input {
@@ -135,13 +142,13 @@ body {
 }
 
 .success {
-    color: green;
+	color: green;
 	font-size: x-large;
 	font-weight: bold;
 }
 
 .failure {
-    color: red;
+	color: red;
 	font-size: larger;
 	font-weight: bold;
 }
